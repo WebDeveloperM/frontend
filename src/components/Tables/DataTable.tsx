@@ -135,18 +135,6 @@ export default function ComputerTable({
     }, []);
 
 
-    // useEffect(() => {
-    //     axioss.get(`${BASE_URL}/all_compyuters/`)
-    //         .then(response => {
-    //             const dataWithDates = response.data.map((c: Compyuter) => ({
-    //                 ...c,
-    //                 history_date: c.history_date ? new Date(c.history_date) : null
-    //             }));
-    //             setComputers(dataWithDates);
-    //         })
-    //         .catch((err) => console.log(err));
-    // }, [deleteCompData]);
-
     useEffect(() => {
         axioss
             .get(`${BASE_URL}/get-mac/`)
@@ -156,16 +144,6 @@ export default function ComputerTable({
             .catch((error) => console.error('Error fetching MAC:', error));
     }, [checkedData]);
 
-    const qrCodeBodyTemplate = (rowData: Compyuter) => {
-        return (
-            <img
-                src={`${BASE_IMAGE_URL}${rowData.qr_image}`}
-                alt="QR Code"
-                width="70"
-                className="ml-3"
-            />
-        );
-    };
 
     const isActiveBodyTemplate = (rowData: Compyuter) => {
         return (
@@ -565,8 +543,7 @@ export default function ComputerTable({
                 }}
                 totalRecords={totalCount}
                 lazy
-                filters={filters}  // 🟢 FILTERS NI TO‘G‘RI QO‘SHING
-                // onFilter={(e) => setFilters(e.filters)} // 🟢 onFilter NI TO‘G‘RI QO‘SHING
+                filters={filters}
                 emptyMessage={
                     <div
                         style={{
@@ -597,6 +574,7 @@ export default function ComputerTable({
                         const globalIndex = (currentPage - 1) * 50 + options.rowIndex + 1;
                         return <span>{globalIndex}</span>;
                     }}
+                    bodyStyle={{ border: '1px solid #c8c5c4', }}
                     style={{ width: '60px', textAlign: 'center' }}
                     headerStyle={{
                         fontWeight: 'bold',
@@ -607,24 +585,10 @@ export default function ComputerTable({
                     }}
                 />
 
-
-                <Column
-                    field="qr_image"
-                    header="Qr_code"
-                    body={qrCodeBodyTemplate}
-                    headerStyle={{
-                        fontWeight: 'bold',
-                        textAlign: 'center',
-                        padding: '10px',
-                        paddingLeft: '10px',
-                        color: 'black',
-                        border: '1px solid #c8c5c4',
-                    }}
-                />
                 <Column
                     field="departament.name"
                     header={departmentHeader}
-                    bodyStyle={{ whiteSpace: 'normal', wordBreak: 'break-word', width: "300px" }}
+                    bodyStyle={{ whiteSpace: 'normal', wordBreak: 'break-word', width: "300px", padding: "10px", paddingLeft: "15px", }}
                     headerStyle={{
                         fontWeight: 'bold',
                         border: '1px solid #c8c5c4',
@@ -753,24 +717,6 @@ export default function ComputerTable({
                 />
             </DataTable>
 
-
-
-            {/* <div className="flex justify-center gap-4 my-4">
-                <button
-                    onClick={() => fetchComputers(prevUrl)}
-                    disabled={!prevUrl}
-                    className="px-4 py-2 bg-gray-300 text-black rounded disabled:opacity-50"
-                >
-                    ⬅️ Oldingi
-                </button>
-                <button
-                    onClick={() => fetchComputers(nextUrl)}
-                    disabled={!nextUrl}
-                    className="px-4 py-2 bg-blue-600 text-white rounded disabled:opacity-50"
-                >
-                    Keyingi ➡️
-                </button>
-            </div> */}
 
             <ModalDeleteComponent
                 openDeleteModal={openDeleteModal}
